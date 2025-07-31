@@ -22,8 +22,6 @@ jobs:
         run: echo "PACKAGE_PATH=$(helm package . | awk '{print $NF}')" >> $GITHUB_ENV
       - name: Publish Helm Chart
         run: |
-          helm registry login registry-1.docker.io -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-          helm push ${{ env.PACKAGE_PATH }} oci://registry-1.docker.io/${{ secrets.DOCKER_HUB_USERNAME }}
           helm registry login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
           helm push ${{ env.PACKAGE_PATH }} oci://ghcr.io/${{ github.actor }}
       - name: Upload to chart repository
